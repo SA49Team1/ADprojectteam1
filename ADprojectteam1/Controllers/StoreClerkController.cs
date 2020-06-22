@@ -161,7 +161,7 @@ namespace ADprojectteam1.Controllers
 
                     foreach(int iId in plannedlist[dId].Keys)
                     {
-                        int i = plannedlist[dId][iId];
+                        
                        if(iId==itemId) totalitemquant += plannedlist[dId][iId];
 
                     }

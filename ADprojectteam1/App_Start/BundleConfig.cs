@@ -25,6 +25,17 @@ namespace ADprojectteam1
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+
+            bundles.Add(new ScriptBundle("~/Bundles/DepEmp/RequisitionForm").Include(
+                      "~/Scripts/DepEmp/RequisitionForm.js"));
+
+            bundles.Add(new ScriptBundle("~/Scripter").Include(
+               "~/Scripts/jquery-{version}.js",
+                "~/Scripts/bootstrap.js",
+                 "~/Scripts/modernizr-*")
+
+               );
         }
     }
 }

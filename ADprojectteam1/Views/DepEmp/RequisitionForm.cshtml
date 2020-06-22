@@ -6,14 +6,6 @@
 }
 @using ADprojectteam1.Models;
 
-
-<script>
-    window.onload = function () { searchEnter() };
-</script>
-
-
-
-
 @{
     PagedList<Item> listItem = ViewBag.Rlist;
     string searchStr = (string)ViewData["searchStr"];
@@ -21,7 +13,8 @@
     SRequisition sr = (SRequisition)Session["reqform"];
 
 }
-
+@Scripts.Render("~/Scripter");
+@Scripts.Render("~/Bundles/DepEmp/RequisitionForm");
 <div class="row" style="padding-top:0px;">
     <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
         @{
@@ -55,7 +48,7 @@
         <br>
         <br>
         <br>
-        <form action="javascript:searchClick()" class="navbar-brand" style="padding-top:7px;" method="post">
+        <form action="javascript:RequisitionFormFW.searchClick()" class="navbar-brand" style="padding-top:7px;" method="post">
             <table>
                 <tr>
                     <td>
@@ -93,10 +86,10 @@
                             <tr>
                                 <td>@Html.Raw(it.Description)</td>
                                 <td>
-                                    <input type="text" placeholder="Input quantity" size="6" id="quantityBox @it.Id">
+                                    <input type="text" placeholder="Input quantity" size="6" id="quantityBox@(it.Id)">
                                 </td>
                                 <td>@it.UnitofMeasure</td>
-                                <td><input type="button" value="Add" onclick="Add_to_ReqItem(@it.Id);" /></td>
+                                <td><input type="button" class="AddReqItemButton" value="Add" onclick="RequisitionFormFW.addReqItem(@it.Id)" /></td>
 
                             </tr>
 
@@ -139,80 +132,4 @@
             }
         </style>
 
-
-        <script>
-
-            function searchEnter() {
-                var searchBox = document.getElementById("searchBox");
-                searchBox.addEventListener("keypress", function (e) {
-                    var key = e.which || e.keyCode;
-                    if (key === 13) {
-                        var data = { searchStr: searchBox.value };  /*Here we pass the Viariable name "searchStr" and its value to dictionary 'data'*/
-                        doPOST(data);           /*Here we post 'data' to method, if the method has a parameter with same name of "searchStr", it passes to controller.*/
-                    }
-                });
-            }
-
-            function searchClick() {
-                var searchBox = document.getElementById("searchBox");
-                var data = { searchStr: searchBox.value };  /*Here we pass the Viariable name "searchStr" and its value to dictionary 'data'*/
-
-                doPOST(data);
-            }
-
-            function doPOST(data) {
-                var ajax = new XMLHttpRequest();
-
-                ajax.onreadystatechange = function () {
-                    if (ajax.readyState == 4) {
-                        document.open();
-                        document.write(ajax.response);
-                        document.close();
-                    }
-                }
-                ajax.open("POST", "/DepEmp/RequisitionForm", true);
-                ajax.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-
-                ajax.send(JSON.stringify(data));
-            }
-
-            function Add_to_ReqItem(item_id) {
-
-
-
-
-                var q = document.getElementById("quantityBox " + item_id).value
-
-                var pdata = { Id: item_id, quant: q };
-
-                $.ajax({
-                    type: "POST",
-                    url: "/DepEmp/AddReqItem",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(pdata),
-                    dataType: "json",
-
-                    // Response Success
-                    success: function (response) {
-
-                        alert("Item added to Requisition form successfully");
-                        window.location.href = "./RequisitionForm";
-
-                    },
-
-                    // Response Fail
-                    failure: function (response) {
-                        alert("Fail Case");
-                    },
-
-                    // Response Error
-                    error: function (response) {
-                        alert("ERROR case");
-                    }
-
-
-                });
-            }
-
-        </script>
 
